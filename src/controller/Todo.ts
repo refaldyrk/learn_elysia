@@ -1,5 +1,5 @@
 import {Elysia} from "elysia";
-import {saveData} from "../service/Todo";
+import {saveData, findAAllData} from "../service/Todo";
 
 export const todoController = new Elysia({prefix: "/api/v1"})
     .post("/todo", async ({set, body}) => {
@@ -24,5 +24,20 @@ export const todoController = new Elysia({prefix: "/api/v1"})
         return {
             "message": "success create data",
             "request": body
+        }
+    })
+    .get("/todo", async function handler({set}) {
+        let data;
+
+       data = await findAAllData().catch(e => {
+           return {
+               "message": e.message
+           }
+       })
+
+        set.status = 200;
+        return {
+            message: "success retrieve data",
+            data: data
         }
     });

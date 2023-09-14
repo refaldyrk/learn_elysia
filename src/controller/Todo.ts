@@ -1,5 +1,5 @@
 import {Elysia} from "elysia";
-import {saveData, findAAllData} from "../service/Todo";
+import {saveData, findAAllData, deleteDataByID} from "../service/Todo";
 
 export const todoController = new Elysia({prefix: "/api/v1"})
     .post("/todo", async ({set, body}) => {
@@ -40,4 +40,18 @@ export const todoController = new Elysia({prefix: "/api/v1"})
             message: "success retrieve data",
             data: data
         }
-    });
+    })
+    .delete("/todo/:id", async function handler({params: {id}, set}) {
+
+            const data = await deleteDataByID(id)
+            if(!data) {
+                set.status = 500;
+                return {
+                    "message": data
+                }
+            }
+            set.status = 201;
+            return {
+                "message": data
+            }
+    })

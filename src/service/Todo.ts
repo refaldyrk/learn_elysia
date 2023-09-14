@@ -1,4 +1,4 @@
-import {Todo}  from "../schema/Todo";
+import {Todo} from "../schema/Todo";
 import {randomUUID} from "crypto";
 
 interface BodyRequest {
@@ -16,7 +16,11 @@ export const saveData = async (body: BodyRequest) => {
 }
 
 export const findAAllData = async  () => {
-    const allTodo = await Todo.find({})
-    return allTodo
+    return Todo.find({});
+}
+
+export const deleteDataByID = async(id: string): Promise<boolean> => {
+       const data = await Todo.deleteOne({"todo_id": id})
+       return data.deletedCount != 0;
 }
 
